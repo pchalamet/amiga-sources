@@ -1,0 +1,37 @@
+
+
+		HuffPacker v1.1 Doc  by Sync of The Special Brothers
+		------------------------------------------------------->
+
+
+HuffPacker is a file packer which uses the Huffman algorithm. It's the
+WORST packer I've ever seen so...
+
+HuffPacker can only be run from the CLI. It's CLI line syntax is :
+
+	HuffPacker [-R] <InFile> <OutFile>
+
++ <InFile> is the name of the file to be packed
++ <OutFile> is the name of the packed file
++ -R is an option that allow you to remove or not the Hunk_Code of a program.
+  It's useful when you work in absolute with an assembler that can't generate
+  Image code like seka does ( for example devpac ). The hunk will be removed
+  and you will only get the code of your program. In this case, <Infile> MUST
+  be an executable file ( if there is more than one hunk in the program, only
+  the first Hunk_Code will be used ). This option is by default OFF ( no -R )
+
+When a file has been packed you see the following display
+		Unpacked Size..........xxxxxx
+		Packed Size............xxxxxx
+		Gain...................xxxxxx
+		Huffman Buffer Size....xxxxxx
+
+When you have packed a file, you will surely like to depack it so there is a
+source code called HuffDepacker.s that allow you to do it
+you have to include it into your source to do that.
+when you want to decrunch something, put in a0 the address of the packed file,
+in a1 the address where you want to decrunch and in a1 the address of a
+memory space where the Huffman Tree can be rebuild. The size of this space is
+given when a file has been successfully crunched or is given by the following
+formula :  (First Word of the Packed File)*16+8
+

@@ -1,0 +1,168 @@
+
+			-- FTB v3.4 DOC --
+				By Sync of DreamDealers
+
+	FTB is a small proggy that help you to play with the disk blocks
+	of a disk. FTB has a format option, a disk bitmap editor and a
+	file installer on disk blocks with the option to extract the first
+	hunk of executable or to write the whole file ( ??!! ).
+
+	You can run FTB from CLI or WB. You MUST have the req.library in your
+	LIBS: otherwise FTB will simply exit...	If FTB is already running, you
+	can't run it another time. First of all, you can see that some letters
+	are underlined : it's the keyboard short-cut.
+
+	The gadgets on the FTB window are the following ones :
+
+	- SELECT FILE
+		This gadget allow you to select a file to install on disk.
+		The FileRequester used is the one of the req.library v2.5.
+		SHORTCUT : press "F"
+
+	- START BLOCK
+		This gadget allow you to choose the block ( INCLUSIVE ) 
+		where the installation must start.
+		The Start Block is in decimal.
+		SHORTCUT : press "S"
+
+	- END BLOCK
+		This gadget allow you to choose the block ( INCLUSIVE )
+		where the installation must stop.
+		The End Block is in decimal.
+		This option is deactivated when End Block equ 1759 ( in fact,
+		the installation stops when the last block of a disk is
+		reached ).
+		SHORTCUT : press "E"
+
+	- NEXT OPTION
+		This gadget display the next installation mode of FTB.
+		The current installation mode is displayed at the right of
+		the gadget.
+		There are 4 modes :
+			* Install Full File :
+				All file will be written to disk.
+
+			* Install Only Hunk_Code :
+				FTB will install only the hunk code of
+				the selected file ( which must be executable )
+				See below for more information on Hunk_Code.
+
+			* Install Full File + CheckSum :
+				All file will be written to disk and THEN a
+				CheckSum of the bootblock disk will be done.
+
+			* Install Hunk_Code + CheckSum :
+				FTB will install only the hunk code of
+				the selected file ( which must be executable )
+				and THEN do the CheckSum of the disk bootblock.
+				See below for more information on Hunk_Code.
+		SHORTCUT : press "N"
+
+	- START
+		This gadget start the installation.
+		BE CAREFUL THAT THE DISK IN DF0: IS THE DISK YOU WANT TO
+		WRITE TO !!!!
+		If an error occure during the installation, a requester will
+		tell it to you.
+		SHORTCUT : press "T"
+	
+	- STOP
+		This gadget abort the installation.
+		SHORTCUT : press "O"
+	
+	- BITMAP
+		When you select it, a new window appears : it's a disk bitmap
+		editor !! Yeah dudes, you can now edit the bitmap of your
+		disk and even the EMFLAG for its validation. Great no ?
+		When the mouse is on the Bitmap field you've got some info
+		on the top of this window ( TRACK, SECTOR, BLOCK etc.. ).
+		You can READ the bitmap of a disk in DF0: and also write it
+		on the disk in DF0: ( when you want to edit the bitmap of a
+		disk, click the READ gadget because FTB display an empty
+		bitmap by default when entering in this section..)
+		The EDIT MODE determines what action it does when you click
+		the mousebuttons on the bitmap field ( Allocate Blocks
+		and Free Blocks ). Note that blocks 0 & 1 or ALWAYS allocated
+		on a standard disk. The left mousebutton do what the EDIT mode
+		say and the right mousebutton do the opposite action ( yeahh,
+		it's a bit like in Dpaint !! )
+		the VALID gadget let you select if the bitmap is valid or not.
+		Yeah, that's all for this Bitmap Editor, except that you exit
+		when you click the CLOSEWINDOW gadget.
+		SHORTCUTS : press "B" for the Bitmap Editor
+			    press "R" for READ
+			    press "W" for WRITE
+			    press "E" for EDIT MODE
+			    press "V" for VALID
+
+	- FORMAT
+		Yes, now you can format your disk ! When you select this gadget,
+		a string gadget appears and ask you the name of the disk.
+		If you want to abort, then click the CANCEL gadget otherwise
+		enter its name. Then a window appears with a progress bar.
+		Simply wait until the end of the format and you should have
+		a formated disk if no error occured.
+		If ya want to stop while formating, simply remove the disk
+		from DF0: ( Hummmm !!...)
+		SHORTCUT : press "M"
+
+	- ICONIZE
+		This gadget will iconize the FTB window to a small one.
+		When the window is iconized, activate the window and click the
+		right mouse button to make the FTB window to reapear.
+		NOTE: If there is not enough memory to reopen the window,
+		FTB will simply exit without any warning !
+		SHORTCUT : press "I"
+
+	- ABOUT
+		Guess what it is ?!  Yeahh , it's the credits with my addy !!
+		SHORTCUT : press "A"
+
+	- LOCK DF0 ( the bit gadget with a disk drawn in it...)
+		Another great option !! It's let you select if the DF0
+		can validate disk when they are inserted in DF0.
+		It's really great if you write on a disk and you don't want
+		another task to access the DF0 and it's also very great
+		if you want to edit some disk with the EMFLAG cleared ( like
+		with the 1st disk of Spring Melodies/Anarchy !! You can now hack
+		it if you don't have the KickStart 2.04 + !! Just modify the
+		validity of the bitmap !!!! )
+		SHORTCUT : press "L"
+
+	- The information area:
+		When FTB is installing a file to a disk, you can see there
+		on which block FTB writes.
+		If the installation is successful (meaning no error request),
+		you can see on which blocks your file has been installed
+		(INCLUSIVE).
+		Each information is displayed in decimal.
+
+
+	About Hunk_Code :
+		As you perhaps know, executables are not written to disk
+		as they are in memory.
+		In an executable file, there is at least a hunk called
+		Hunk_Code : it's the code of the program.
+		There are usually others hunks called Hunk_Reloc : these
+		hunks are used by the Amiga to relocate the Hunk_Code at any
+		place in memory.
+		If there is no Hunk_Reloc that's because the program was
+		written in relative-PC or in ORG.
+		So if you wanna install only the Hunk_Code of a program,
+		it should not have a Hunk_Reloc otherwise the program
+		won't work when on disk blocks ( like for a demo for
+		example ).
+		By the way , FTB will ONLY INSTALL THE FIRST HUNK_CODE
+		found since there could have MORE than one Hunk_Code in an
+		executable.
+
+	
+	Bugs of FTB v3.4:
+		Yes, I've seen only a single "bug" ( if we can call thiz a
+		bug..) : Well, when you enter in the bitmap editor for
+		example, you can still click on the FTB window's gadgets...
+		The effect is not immediate as Intuition buffered all
+		IntuiMsg so when you exit the bitmap editor all the action
+		are THEN done (??! try it..) . SO PLEASE  don't do that
+		coz' you could have some problems ( don't be affraid,
+		no GURU at all !!)

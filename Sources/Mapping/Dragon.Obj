@@ -1,0 +1,21 @@
+
+
+	NEW_FACE
+Dragon_Face
+	dc.l Dragon_Texture
+	dc.l 4
+Dragon_Dots
+	DEF_LINE 0,0
+	DEF_LINE 0,80
+	DEF_LINE 100,40
+	DEF_LINE 0,0
+
+Dragon_Texture
+	dc.l Dragon_Chunky
+	dc.w 0,0
+	dc.w 0,39
+	dc.w 49,20
+	dc.w 0,0
+
+Dragon_Chunky
+	incbin "Texture_Dragon.CHK"

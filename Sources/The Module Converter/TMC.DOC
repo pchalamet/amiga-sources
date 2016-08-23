@@ -1,0 +1,319 @@
+
+
+                           _                      _
+    /¬¯¯¬¯¬¯¬¯¯¬¯¯¯¬¯¯¯¯¯¬¯/\/¬¯¯¬¬\      /¯¯¬¬¯\/\¯¬¬¯¬¯¬¬¬¬¬¯¬¯¬¯¬\
+   /                      /\/       \    /       \/\                 \
+  /_______        _______/\/         \  /         \/\      ___________\
+  \\\\\\\/       /\\\\\\\\/     /\    \/    /\     \/\     \///////////
+   \\\\\/       /\\\\\\\\/     /\\\        ///\     \/\     \/////////
+    ¥¬¯/       /\\\/¯¬¯¬/     /\\\/\      /\///\     \/\     \¯¬¯¥¬¬¯
+      /       /\\\/    /     /\\\/  \    /  \///\     \/\     \
+     /       /\\\/    /     /\\\/    \  /    \///\     \/\     \____________
+    /       /\\\/    /     /\\\/      \/      \///\     \/\                 \
+   /       /\\\/    /     /\\\/                \///\     \/\                 \
+   \______/\\\/    /_____/\\\/                  \///\_____\/\_________________\
+    \\\\\\\\\/     \\\\\\\\\/                    \/////////\///////////////////
+     \\\\\\\/       \\\\\\\/                      \///////\///////////////////
+      ¯¬¯¥¬¯         ¯¬¥¯¯¬                        ¯¥¯¥¬¬  ¯¯¬¬¬¥¯¬¯¥¯¬¯¬¯¯¥¬
+
+                     -- The Ultimate Module Converter -- ( au moins..hehe!!)
+
+                   ============  VERSION 3.8  ============
+                  ==        By  Sync/DreamDealers        ==
+                  ==      Last Change :  5 May 1993      ==
+                   =======================================
+
+
+Description
+-----------
+		It's a program that convert soundtracker modules to a new format
+		so they can be played FASTER. And better, the module is nearly
+		unrippable !!
+		TMC also performs :
+			- a new patterns encoding : notes use 3 bytes instead
+			  of 4.
+			- a patterns pack : TMC is able to pack blank notes.
+			  It uses only 1 byte instead of 3. But if TMC meets
+			  for example 3 blank notes on a line each after then
+			  they will also be packed on a single byte !!
+			- a pattern cutting : if the end of a pattern is not
+			  used then it will be removed if it is NOT used at all
+			- removes unused patterns
+			- removes unused positions
+			- removes unused samples
+			- removes unused datas in samples ( loop capabilities 
+			  not to play the end of a sample if its restart is
+			  different of 0 )
+
+Use of TMC
+----------
+		First of all, you MUST have the req.library in your LIBS:
+		otherwise TMC will simply exit..
+		When you run TMC  ( from CLI or WB ) you can see a window with a
+		menu in it. Just press the key to obtain the option you want.
+
+		Key C : a file requester appear.
+			The default input path is the current CLI path.
+			Select a module and click OK ( or CANCEL if you want
+			to abort )
+			Then TMC read your module, convert it and save it
+			to the output directory ( see Key D )
+			While converting, TMC tell you what it does.
+		Key D : a directory requester appear
+			it's allow you to change the output directory.
+			The default output path is the current CLI path.
+		Key O : this change the state of the optimize sample option.
+			This is useful if you DON'T want the sample to be
+			removed or reassigned to another sample number ( hum..)
+			See preferences file "SAMPLEOPT ON/OFF" option for
+			more info.
+		Key S : this change the state of the split option.
+			This is useful if you want the module to be splited in
+			2 files ( Song.s and Samples.s )
+		Key A : display the about (did you expect something else, he ?)
+		Key Q : quit TMC
+
+
+The preferences file
+--------------------
+		The preferences file has changed since version 2.
+		The preferences file "TMC.Prefs" is always an ASCII file and
+		is located in the S: directory.
+
+		The lines structure is now :
+		<KEYWORD=>parameter
+		A line can't be longer than 100 chars and can be separated
+		from the others	with some blank lines ( ONLY a Char Return
+		chr$(10) is acceptable ( no other shit like spaces or
+		tabulations..). )
+
+		Here is all the avaible KeyWords in this version:
+		NOTE: KeyWord MUST be typed in CAPITALS !!
+
+		; <Comment>
+			For adding a commentary in the preferences file.
+			This KeyWord has NO effect. It's just for the reader.
+
+		SOURCE=<Path>
+			For changing the source directory ( As pressing
+			key C in the menu )
+
+		DESTINATION=<Path>
+			For changing the output directory ( When TMC has
+			finished the conversion and wants to save the result
+			it writes to this directory )
+		
+		MARK=<Mark>
+			For ADDING a mark to the 'TMC build inside mark list'
+			(arf...). It's useful for example for modules
+			which don't have the 'M.K.' mark inside as the
+			modules produced by the old Startrekker which write
+			'FLT4' instead.
+			The default mark in TMC is 'M.K.'
+			The mark MUST be a 4 letters word. You have the
+			possibility to define binary mark by using the char
+			'\' following by a 3 decimal ASCII number ( I don't
+			think this option will be usefull but nevermind !! )
+			If you want to use the '\' in the mark just type '\\'
+			For example :   MARK=\065\066C\\ will create
+			the mark : 'ABC\'
+
+		MASKSHOW=<Mask>
+			For changing the show mask of the file requester.
+			The mask is 30 chars maximum long.
+
+		MASKHIDE=<Mask>
+			For changing the hide mask of the file requester.
+			The mask is 30 chars maximum long.
+
+		OPTSAMPLES ON
+			For enabling the optimization of the samples.
+			With this option, unused samples will be removed
+			from the song.
+			This option is by default selected if no preferences
+			file is found.
+
+		OPTSAMPLES OFF
+			For forbiding the optimization of the samples.
+			With this option, all samples will be in the song
+			even unused samples. This option can be useful in the
+			case you want to store several modules made with the
+			SAME samples because you can simply change the patterns
+			without loading the samples !! If you want to go this
+			way,look in the 'Song.s' produced by TMC for more info.
+
+		SPLITMOD ON
+			For spliting the output file Song.s produce with TMC.
+			The first file produced is "Song.s" which contains
+			all patterns and positions and a second file is also
+			produced "Samples.s" which contains the samples...
+			This can be useful if you want to put the "Song.s" and
+			"Samples.s" files in different section of your proggy
+			because just the "Samples.s" file NEED to be in
+			CHIP MEMORY ( the Song.s can then be placed in FAST
+			MEMORY ).
+
+		SPLITMOD OFF
+			For forbiffing the splitting of the Song.s file.
+			A single file is produce by TMC: it contains both
+			song datas and samples datas.
+			This option is by default selected if no preferences
+			file is found.
+
+TMC errors
+----------
+		- When TMC read the preferences file, it may found an error.
+		  TMC tells you on which line the error is.
+		  If the path given with DESTINATION= doesn't exist then
+		  you will get an error but ONLY at the end of the parsing..
+		  The preferences file has no effect on TMC datas when an
+		  error occured.
+
+		- When converting a module, TMC may tells you that's not
+		  a valid module. It's because it's really not a module
+		  or the mark is not recognized by TMC. In the last case
+		  see the preferences file options.
+
+		- When converting, TMC may tells you that it found a not
+		  supported command in the patterns of your module.
+		  TMC just display a warning because you might use yourself
+		  this command in your program.
+		  But anyway, unsupported commands don't crash the replay !!
+		  See the replay for the supported command.
+
+		- When converting a module, TMC may tells you that there is
+		  a library error such with EXEC or DOS. Don't cry but there
+		  is nothing I can do for you... hehe
+
+TMC outputs
+-----------
+		TMC produce an ASCII file of your module ( Song.s ),which you
+		will have to asssemble with your favorite assembler (me it's
+		Devpac 2 ...).  You can read the file Song.s to see what
+		kind of file is generated by TMC. The others files generated
+		are NOT ASCII !!
+
+		TMC produces the following files in the output directory :
+			Song.s		: it's the file that you must include
+					  just after the replay-routine.
+					  IT'S AN ASCII FILE SO INCLUDE IT AND
+					  DO NOT INCBIN IT !!!
+			Patterns.dat	: it's all the patterns of the module.
+			Sample##.dat	: the ## designed a number in hex.
+					  it's a sample of your module.
+
+		As the Song.s is an ASCII file, you can do what you want with
+		it. For example, you can put the samples in chip memory and
+		the others datas in fast memory. Song.s is dividided in 2
+		section the first one is the patterns etc.. and the second
+		is the samples. Now you can understand why the converted
+		module is hard to rip...
+
+The replay
+----------
+		To use the replay,just read the beginning of TMC_Replay.s (arf!)
+
+		  TMC_Replay.s -only- handles the following commands :
+
+			0 Arpeggio
+			1 Portamento Up
+			2 Portamento Down
+			3 Tone Portamento
+			4 Vibrato
+			5 Tone Portamento + Volume Slide
+			6 Vibrato + Volume Slide
+			7 Tremolo
+			9 Sample Offset
+			A Volume Slide
+			B Position Jump
+			C Set Volume
+			D Pattern Break
+			E0 Filter On/Off
+			E1 FineSlide Up
+			E2 FineSlide Down
+			E6 Pattern Loop
+			E9 Retrig Note
+			EA FineVolSlide Up
+			EB FineVolSlide Down
+			EC Cut Note
+			ED Note Delay
+			EE Pattern Delay
+			F Set Speed
+		======> FineTune is Supported
+			ALL these commands work exactly as ProTracker defines
+			them.
+		As you can see, it's nearly a ProTracker replay except that
+		it doesn't handle at all PT E control commands E3/E4/E5/E7/E8
+		and the Invert Loop EF command.
+		For the moment, the TMC replay takes 6 raster-lines to play
+		a converted module. Not so bad, he ?
+
+		Something important : The replay uses the $78.w address
+		to initialise the samples while playing. As there is no save
+		of $78.w in mt_init you might have to do it yourself...
+
+		Ok, that's all...
+				      __
+				     ///
+				 __ ///	AMIGA Rules Forever !
+				 \\X//	---------------------->
+				  ¯¯¯
+--------------------------------------------------------------------------------
+TMC History :
+	version 3.8 : Hum... just another release of TMC... This time, it's
+		      just the replay that has been modified : it was previously
+		      using the CIA-B timer A , NOW it uses the CIA-B timer B
+		      for OS2.0 compatibility AND because it was fucking lame
+		      to reset each time I wanna use ProTracker just after
+		      replaying a zik ( When using PT with a CIA interrupt...)
+		      NOW it works quite well I think !!!
+	version 3.7 : Added a split module option to TMC. It's now easier to
+		      put only the samples in Chip Memory instead of the whole
+		      module.
+		      Change SAMPLEOPT to OPTSAMPLES in preferences file.
+	version 3.6 : internal release
+	version 3.5 : Command E6 and EE has been added to the replay.
+		      TMC can warn the user if a not supported command is found
+		      in the patterns.
+		      Correct another bug in the replay : the tremolo routine
+		      was in fact a vibrato routine ... ( humm.. block copy !!)
+	version 3.4 : Now, if there is,on a line of a pattern, one or more
+		      blank notes each after then they will be packed on
+		      a single byte !! Now, a blank pattern have a length
+		      of 66 bytes !!
+	version 3.3 : Include the commands E1/E2/E9/EA/EB/EC/ED of protracker
+		      commands : it was time to implement them !!
+	version 3.2 : A blank note packer has been implemented in TMC and
+		      the replay has been modified to skip packed notes.
+		      A blank note now uses only one byte instead of 3.
+	version 3.1 : The preferences file parser has been entirely rewriten
+		      because it was quite lame.. Now it's a REAL parser
+		      which can handle infinite Key Word !!!!
+	version 3.0 : TMC has been recoded at 99% and is now packing better
+		      than before by removing the end of patterns as for
+		      example after a pattern break ( but only if the end of
+		      the pattern is NOT used !! )
+		      The notes optimizer has disappeard...Maybe it will reapear
+		      one day !!
+	version 2.6 : correct a bug in the replay ( another one ..)
+	version 2.5 : Last Change : 12 January 1993
+		      Minors optimizations for speed purposes. The replay was
+		      loosing some low notes => incrize timer value.
+		      I also know that there is another -=*BIG BUG*=- in TMC due
+		      to the note optimizer, I will fix it in version 3.0 of TMC
+		      I think it's for soon !!
+	version 2.4 : Now display the size of converted module and the gain from
+		      the original module. Correct a big bug in some flags which
+		      weren't clear when the convertion starts. Correct a bug in
+		      TMC with Sample Offset command (due to the note optimizer)
+	version 2.3 : Insert a note optimizer in TMC
+	version 2.2 : Optimized the Vibrato, Tremolo and Portamento routines
+		      Correct a bug in the Pattern Break routine
+	version 2.1 : Added a preferences file. Yeahhh !
+		      Correct a bug in the TMC position-list analyzer
+		      The replay has been totally transmutted !!
+	version 2.0 : Now the patterns of a module are packed from 1024 Bytes
+		      to 768 Bytes. Maximum Gain is 16 Kbytes ( quite bad ...)
+	version 1.4 : Added a finetune support and optimize a bit the replay
+	version 1.3 : Corrected the bugs of the Replay and of TMC
+	version 1.0-1.2 : let's forget thiz jokes...

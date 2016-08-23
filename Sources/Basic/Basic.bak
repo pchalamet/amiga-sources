@@ -1,0 +1,78 @@
+
+*			Interpreteur Basic
+*			~~~~~~~~~~~~~~~~~~
+
+
+
+* Structure d'une variable
+* ~~~~~~~~~~~~~~~~~~~~~~~~
+	rsreset
+Var_Struct	rs.b 0
+Var_Name	rs.l 1
+Var_Next	rs.l 1
+Var_Data	rs.l 1
+Var_SIZEOF	rs.l 1
+
+
+* Structure d'un tableau
+* ~~~~~~~~~~~~~~~~~~~~~~
+	rsreset
+Array_Struct	rs.b 0
+Array_Name	rs.l 1
+Array_Next	rs.l 1
+Array_Dim	rs.w 1
+Array_Size	rs.b 0
+Array_Data	rs.b 0
+
+
+BASIC_Interpretor
+	move.l a0,Source(a5)
+	move.l sp,Save_SP(a5)
+	lea DataBase(pc),a5
+
+
+* Interpreteur BASIC
+* ~~~~~~~~~~~~~~~~~~
+*   -->	A0=* source (chaine C)
+*	a5=_DataBase
+*
+* <--	a5=_DataBase
+*
+Interpretor
+	move.b (a0)+,d0
+	beq Interpretor_Exit	
+
+	
+
+
+
+Interpretor_Exit
+	subq.l #1,a0
+	rts
+
+
+* Effacement de toutes les variables
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*   -->	a5=_DataBase
+Erase_Variable
+	rts
+
+
+
+
+
+* Toutes les datas utiles pour le BASIC
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DATABASE_OFFSET=0
+	rsset -DATABASE_OFFSET
+DataBase_Struct		rs.b 0
+Integer_List		rs.l 1
+String_List		rs.l 1
+IntergerArray_List	rs.l 1
+StringArray_List	rs.l 1
+Source			rs.l 1
+Save_SP			rs.l 1
+DataBase_SIZEOF=__RS-DATABASE_OFFSET
+
+_DataBase		ds.b DataBase_SIZEOF
+
